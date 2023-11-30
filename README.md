@@ -30,6 +30,7 @@ Mandatory requirement: successfully compile/interpret the tests.
    - Parentheses can be used to change the precedence of the operators.
   
 Backus-Naur Form (BNF):   
+```
 <expression> ::= <boolean>
                | <not_expression>
                | <binary_expression>
@@ -44,8 +45,8 @@ Backus-Naur Form (BNF):
 
 <binary_operator> ::= "AND"
                     | "OR"
+```
 
-This is a very basic syntax and you might need to adjust it according to your needs. For example, you might want to add support for variables or more complex expressions.
 ## Sintax
 <identifier> ::= <letter> { <letter> | <digit> | "_" }
 <keyword> ::= "if" | "else" | "while" | "for" | "int" | "float" | ...
