@@ -13,17 +13,41 @@ Mandatory requirement: successfully compile/interpret the tests.
 - #08:Readme
 
 ------------------------------------------------------------------
+# Programming Language of Operators (Only)
+1. **Tokens:** Your language will have the following tokens:
+   - `AND`: Represents the logical AND operator.
+   - `OR`: Represents the logical OR operator.
+   - `NOT`: Represents the logical NOT operator.
+   - `TRUE`: Represents the boolean value true.
+   - `FALSE`: Represents the boolean value false.
+   - `(` and `)`: Parentheses for grouping expressions.
 
-## Sintax of My Language
-<identifier> ::= <letter> { <letter> | <digit> | "_" }
-<keyword> ::= "if" | "else" | "while" | "for" | "int" | "float" | ...
-<data_type> ::= "int" | "float" | "char" | "bool"
-<operator> ::= "+" | "-" | "*" | "/" | "%" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "&&" | "||" | "!"
-<expression> ::= <literal> | <identifier> | <binary_operation> | <unary_operation> | <function_call>
-<statement> ::= <expression> ";" | <if_statement> | <while_loop> | <for_loop> | <function_definition>
-<program> ::= { <statement> }
+2. **Grammar:** The grammar of your language could be defined as follows:
+   - `expression`: An expression can be a `boolean`, a `not_expression`, or a `binary_expression`.
+   - `boolean`: A boolean can be either `TRUE` or `FALSE`.
+   - `not_expression`: A not_expression is `NOT` followed by an `expression`.
+   - `binary_expression`: A binary_expression is an `expression` followed by a `binary_operator` followed by another `expression`. The `binary_operator` can be either `AND` or `OR`.
+   - Parentheses can be used to change the precedence of the operators.
+  
+Backus-Naur Form (BNF):   
+```
+<expression> ::= <boolean>
+               | <not_expression>
+               | <binary_expression>
+               | "(" <expression> ")"
 
-# Simple Compiler Project
+<boolean> ::= "TRUE"
+            | "FALSE"
+
+<not_expression> ::= "NOT" <expression>
+
+<binary_expression> ::= <expression> <binary_operator> <expression>
+
+<binary_operator> ::= "AND"
+                    | "OR"
+```
+
+# Compiler Project for Programming Language of Operators (Only)
 
 ## Overview
 This project is a simple compiler for a custom language. It includes an interpreter for evaluating abstract syntax trees (ASTs). The compiler is designed to interpret basic arithmetic operations.
