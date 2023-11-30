@@ -35,15 +35,15 @@ This project is a simple compiler for a custom language. It includes an interpre
 
 #### Building
 To build the project, run the following command in the terminal:
-gcc -o interpreter interpreter.c
+```gcc -o interpreter interpreter.c```
 
 ### Running Tests
 To run the tests, first build the test executable with the following command:
-gcc -o test test.c interpreter.c
+```gcc -o test test.c interpreter.c```
 
 
 Then, run the tests with the following command:
-./test
+```./test```
 
 
 ### Usage
