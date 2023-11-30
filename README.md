@@ -42,7 +42,7 @@ The parser takes the tokens produced by the lexer and constructs an AST. This pa
 The interpreter is defined in `interpreter.c` and `interpreter.h`. It takes an AST and evaluates it to produce a result.
 
 ## 05: Main
-The main function is located in `test.c`. It runs a series of tests on the interpreter.
+The main function is located in `main.c`. It runs a series of tests on the interpreter.
 
 ## 06: Makefile
 The Makefile for this project is still under development.
