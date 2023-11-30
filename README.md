@@ -47,15 +47,6 @@ Backus-Naur Form (BNF):
                     | "OR"
 ```
 
-## Sintax
-<identifier> ::= <letter> { <letter> | <digit> | "_" }
-<keyword> ::= "if" | "else" | "while" | "for" | "int" | "float" | ...
-<data_type> ::= "int" | "float" | "char" | "bool"
-<operator> ::= "+" | "-" | "*" | "/" | "%" | "==" | "!=" | "<" | ">" | "<=" | ">=" | "&&" | "||" | "!"
-<expression> ::= <literal> | <identifier> | <binary_operation> | <unary_operation> | <function_call>
-<statement> ::= <expression> ";" | <if_statement> | <while_loop> | <for_loop> | <function_definition>
-<program> ::= { <statement> }
-
 # Compiler Project for Programming Language of Operators (Only)
 
 ## Overview
