@@ -8,8 +8,8 @@ int main() {
     size_t len = 0;
     ssize_t read;
 
-    char* files[] = {"testsfiles/test1.txt", "testsfiles/test2.txt", "testsfiles/test3.txt", "testsfiles/test4.txt", "testsfiles/test5.txt", "testsfiles/test6.txt"};
-    int expected_results[] = {1, 0, 1, 0, 1, 0};
+    char* files[] = {"testsfiles/test1.txt", "testsfiles/test2.txt", "testsfiles/test3.txt", "testsfiles/test4.txt", "testsfiles/test5.txt", "testsfiles/test6.txt", "testsfiles/test7.txt"};
+    int expected_results[] = {1, 0, 1, 0, 1, 0, 1};
 
     for(int i = 0; i < sizeof(files)/sizeof(files[0]); i++) {
         char command[50];
