@@ -13,91 +13,103 @@ Mandatory requirement: successfully compile/interpret the tests.
 - #08:Readme
 
 ------------------------------------------------------------------
-# Programming Language of Operators (Only)
-1. **Tokens:** Your language will have the following tokens:
-   - `AND`: Represents the logical AND operator.
-   - `OR`: Represents the logical OR operator.
-   - `NOT`: Represents the logical NOT operator.
-   - `TRUE`: Represents the boolean value true.
-   - `FALSE`: Represents the boolean value false.
-   - `(` and `)`: Parentheses for grouping expressions.
+# Logic Compiler
+This project is a simple logic compiler that evaluates logical expressions involving `AND`, `OR`, and `NOT` operations on boolean values `TRUE` and `FALSE`.
 
-2. **Grammar:** The grammar of your language could be defined as follows:
-   - `expression`: An expression can be a `boolean`, a `not_expression`, or a `binary_expression`.
-   - `boolean`: A boolean can be either `TRUE` or `FALSE`.
-   - `not_expression`: A not_expression is `NOT` followed by an `expression`.
-   - `binary_expression`: A binary_expression is an `expression` followed by a `binary_operator` followed by another `expression`. The `binary_operator` can be either `AND` or `OR`.
-   - Parentheses can be used to change the precedence of the operators.
+## **Tokens:** The language have the following tokens:
+   - `AND`: Logical AND operation
+   - `OR`: Logical OR operation
+   - `NOT`: Logical NOT operation
+   - `TRUE`: Boolean value true
+   - `FALSE`: Boolean value false
+   - `(`: Left parenthesis
+   - `)`: Right parenthesis
+
+3. **Grammar:** Language Grammar could be defined as follows:
+  - `expr`: An expression, which can be a boolean value, a `NOT` expression, or a binary operation (`AND` or `OR`). Expressions can also be grouped using parentheses.
+
   
 Backus-Naur Form (BNF):   
 ```
-<expression> ::= <boolean>
-               | <not_expression>
-               | <binary_expression>
-               | "(" <expression> ")"
-
-<boolean> ::= "TRUE"
-            | "FALSE"
-
-<not_expression> ::= "NOT" <expression>
-
-<binary_expression> ::= <expression> <binary_operator> <expression>
-
-<binary_operator> ::= "AND"
-                    | "OR"
+<expr> ::= <BOOL>
+         | NOT <expr>
+         | <expr> AND <expr>
+         | <expr> OR <expr>
+         | ( <expr> )
 ```
 
-# Compiler Project for Programming Language of Operators (Only)
+Where:
+- `<BOOL>` is a boolean value (`TRUE` or `FALSE`).
+- `NOT <expr>` is a `NOT` operation on an expression.
+- `<expr> AND <expr>` is an `AND` operation between two expressions.
+- `<expr> OR <expr>` is an `OR` operation between two expressions.
+- `( <expr> )` is an expression grouped by parentheses.
 
-## Overview
-This project is a simple compiler for a custom language. It includes an interpreter for evaluating abstract syntax trees (ASTs). The compiler is designed to interpret basic arithmetic operations.
+## Files
 
-## Getting Started
-## 01: Ast
-The abstract syntax tree (AST) is defined in `ast.h`. Each node in the AST represents a number or a binary operation.
-
-## 02: Lexer
-The lexer is responsible for breaking down the input into tokens. This part of the project is still under development.
-
-## 03: Parser
-The parser takes the tokens produced by the lexer and constructs an AST. This part of the project is still under development.
-
-## 04: Compiler/Interpreter
-The interpreter is defined in `interpreter.c` and `interpreter.h`. It takes an AST and evaluates it to produce a result.
-
-## 05: Main
-The main function is located in `main.c`. It runs a series of tests on the interpreter.
-
-## 06: Makefile
-The Makefile for this project is still under development.
-
-## 07: Tests
-The tests are defined in `test.c`. They test the functionality of the interpreter by creating ASTs and checking that they are evaluated correctly.
-
-### Prerequisites
-- GCC compiler
-
-### Building
-To build the project, run the following command in the terminal:
-```gcc -o interpreter interpreter.c```
-
-## Running Tests
-To run the tests, first build the test executable with the following command:
-```gcc -o test test.c interpreter.c```
+- `ast.c` and `ast.h`: Define the abstract syntax tree (AST) for the logical expressions.
+- `interpreter.c` and `interpreter.h`: Define the interpreter that evaluates the AST.
+- `lexer.l`: Defines the lexical analyzer that tokenizes the input.
+- `parser.y`: Defines the syntax analyzer that parses the tokens into an AST.
+- `main.c`: Contains the main function that ties everything together.
+- `Makefile`: Defines the build rules for the project.
+- `test.c`: Contains a test program that runs the logic compiler on several test files and checks if the output matches the expected result.
 
 
-Then, run the tests with the following command:
-```./test```
+## Building and Running
+The project uses a Makefile for building the executable. Here's how you can build and run the project:
 
+1. To build the project, navigate to the project directory in your terminal and run the following command:
+```bash
+make
+```
+This command will compile the source files and generate an executable named logic_compiler.
+
+
+2. To run the logic compiler on a file, use the following command:
+```bash
+./logic_compiler <file>
+```
+
+
+3. To clean the project (remove the compiled files), use the following command:
+```bash
+make clean
+```
+This command will remove the object files and the logic_compiler executable.
+
+
+4. To run the tests, first compile the test program with the following command:
+```bash
+gcc test.c -o test
+```
+Then, run the test program with the following command:
+```bash
+./test
+```
+This will print the output of each test file and whether the test passed or failed.
 
 ## Usage
-The compiler interprets basic arithmetic operations. The language syntax is based on abstract syntax trees (ASTs). Each AST node represents a number or a binary operation. A binary operation node contains an operator ('+' for addition, '-' for subtraction) and two child nodes representing the operands.
 
-Here's an example of how to create an AST for the expression "2 + 3":
+To use the logic compiler, write a logical expression in a text file using the tokens and grammar defined above. Then, run the logic compiler on the file using the command shown in the "Building and Running" section. The logic compiler will print the result of the expression.
 
-```c
-AstNode node1 = { .type = AST_NUMBER, .data = { .number = 2 } };
-AstNode node2 = { .type = AST_NUMBER, .data = { .number = 3 } };
-AstNode root = { .type = AST_BINARY_OPERATION, .data = { .binary_operation = { .op = '+', .left = &node1, .right = &node2 } } };
-int result = interpret(&root);
-```c
+Here's an example:
+
+1. Write your logical expression in a text file. For example, you might write the following in a file named `example.txt`:
+```text
+NOT (TRUE AND FALSE) OR TRUE
+```
+
+2. Run the logic compiler on the file:
+
+```bash
+./logic_compiler example.txt
+```
+
+Output:
+The logic compiler will print the result of the expression:
+```text
+TRUE
+```
+
+
