@@ -25,7 +25,7 @@ This project is a simple logic compiler that evaluates logical expressions invol
    - `(`: Left parenthesis
    - `)`: Right parenthesis
 
-3. **Grammar:** Language Grammar could be defined as follows:
+## **Grammar:** Language Grammar could be defined as follows:
   - `expr`: An expression, which can be a boolean value, a `NOT` expression, or a binary operation (`AND` or `OR`). Expressions can also be grouped using parentheses.
 
   
