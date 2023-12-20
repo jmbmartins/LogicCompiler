@@ -25,6 +25,41 @@ Node* create_binop_node(Node* left, Node* right, BinOpType op) {
     return node;
 }
 
+Node* create_if_node(Node* cond, Node* then_branch, Node* else_branch) {
+    Node* node = malloc(sizeof(Node));
+    node->type = NODE_IF;
+    node->if_expr.cond = cond;
+    node->if_expr.then_branch = then_branch;
+    node->if_expr.else_branch = else_branch;
+    return node;
+}
+
+Node* create_while_node(Node* cond, Node* body) {
+    Node* node = malloc(sizeof(Node));
+    node->type = NODE_WHILE;
+    node->while_loop.cond = cond;
+    node->while_loop.body = body;
+    return node;
+}
+
+Node* create_for_node(Node* init, Node* cond, Node* increment, Node* body) {
+    Node* node = malloc(sizeof(Node));
+    node->type = NODE_FOR;
+    node->for_loop.init = init;
+    node->for_loop.cond = cond;
+    node->for_loop.increment = increment;
+    node->for_loop.body = body;
+    return node;
+}
+
+Node* create_var_node(char* name, Node* value) {
+    Node* node = malloc(sizeof(Node));
+    node->type = NODE_VAR;
+    node->var_decl.name = name;
+    node->var_decl.value = value;
+    return node;
+}
+
 int evaluate(Node* node) {
     switch (node->type) {
         case NODE_BOOL:
@@ -43,8 +78,69 @@ int evaluate(Node* node) {
                     fprintf(stderr, "Invalid binary operator\n");
                     return 0;
             }
+        case NODE_IF:
+            if (evaluate(node->if_expr.cond)) {
+                return evaluate(node->if_expr.then_branch);
+            } else {
+                return evaluate(node->if_expr.else_branch);
+            }
+        case NODE_WHILE:
+            while (evaluate(node->while_loop.cond)) {
+                evaluate(node->while_loop.body);
+            }
+            return 0; // While loops do not return a value
+        case NODE_FOR:
+            for (evaluate(node->for_loop.init); evaluate(node->for_loop.cond); evaluate(node->for_loop.increment)) {
+                evaluate(node->for_loop.body);
+            }
+            return 0; // For loops do not return a value
+        case NODE_VAR:
+            // You will need to implement variable storage and lookup
+            // This is a placeholder implementation
+            return evaluate(node->var_decl.value);
         default:
             fprintf(stderr, "Invalid node type\n");
             return 0;
     }
+}
+
+void free_node(Node* node) {
+    if (node == NULL) {
+        return;
+    }
+
+    // Free child nodes
+    switch (node->type) {
+        case NODE_NOT:
+            free_node(node->not_expr.expr);
+            break;
+        case NODE_BINOP:
+            free_node(node->binop.left);
+            free_node(node->binop.right);
+            break;
+        case NODE_IF:
+            free_node(node->if_expr.cond);
+            free_node(node->if_expr.then_branch);
+            free_node(node->if_expr.else_branch);
+            break;
+        case NODE_WHILE:
+            free_node(node->while_loop.cond);
+            free_node(node->while_loop.body);
+            break;
+        case NODE_FOR:
+            free_node(node->for_loop.init);
+            free_node(node->for_loop.cond);
+            free_node(node->for_loop.increment);
+            free_node(node->for_loop.body);
+            break;
+        case NODE_VAR:
+            free(node->var_decl.name); // Assuming name was dynamically allocated
+            free_node(node->var_decl.value);
+            break;
+        default:
+            break;
+    }
+
+    // Free the node itself
+    free(node);
 }

@@ -21,5 +21,6 @@ int interpret(const char* filename) {
     fclose(fp);
 
     int result = evaluate(parse_tree);
+    free_node(parse_tree); // Free the parsed AST
     return result;
 }
