@@ -1,62 +1,57 @@
 %{
 #include <stdio.h>
-#include <stdlib.h>
 #include "ast.h"
+#include <stdlib.h>  // Add this line
 extern int yylex();
-void yyerror(const char *s);
+extern int yyparse();
 extern FILE* yyin;
-Node* parse_tree; // Declare parse_tree
+void yyerror(const char* s);
+
+Node* parse_tree;
 %}
 
 %union {
     Node* node;
     int bool_val;
-    char* identifier;
+    BinOpType binop;
+    char* strval;  // Added this line
 }
 
-%token <bool_val> BOOL
-%token AND OR NOT
-%token IF ELSE THEN FOR WHILE DO VAR LET CONST
-%token <identifier> IDENTIFIER
-%token LPAREN RPAREN SEMICOLON EQUALS
+%token <bool_val> TRUE FALSE
+%token <binop> AND OR
+%token IF THEN ELSE WHILE FOR VAR
+%token LPAREN RPAREN LBRACE RBRACE SEMICOLON
+%token <strval> IDENTIFIER  // Changed this line
+%token ASSIGN
+%token NOT  // Add this line
 
-%type <node> expr statement var_declaration
+%type <node> expr statement
 
 %%
 
-expr:
-    BOOL { $$ = create_bool_node($1); parse_tree = $$; }
-    | NOT expr { $$ = create_not_node($2); parse_tree = $$; }
-    | expr AND expr { $$ = create_binop_node($1, $3, OP_AND); parse_tree = $$; }
-    | expr OR expr { $$ = create_binop_node($1, $3, OP_OR); parse_tree = $$; }
-    | LPAREN expr RPAREN { $$ = $2; parse_tree = $$; }
-    ;
+program:
+    statement { parse_tree = $1; }
+;
 
 statement:
-    IF LPAREN expr RPAREN THEN statement ELSE statement { $$ = create_if_node($3, $6, $8); parse_tree = $$; }
-    | WHILE LPAREN expr RPAREN DO statement { $$ = create_while_node($3, $6); parse_tree = $$; }
-    | FOR LPAREN var_declaration SEMICOLON expr SEMICOLON expr RPAREN DO statement { $$ = create_for_node($3, $5, $7, $10); parse_tree = $$; }
-    | var_declaration { $$ = $1; parse_tree = $$; }
-    ;
+    IF LPAREN expr RPAREN THEN LBRACE statement RBRACE ELSE LBRACE statement RBRACE { $$ = create_if_node($3, $7, $11); }
+    | WHILE LPAREN expr RPAREN LBRACE statement RBRACE { $$ = create_while_node($3, $6); }
+    | FOR LPAREN statement SEMICOLON expr SEMICOLON statement RPAREN LBRACE statement RBRACE { $$ = create_for_node($3, $5, $7, $10); }
+    | VAR IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_var_node($2, $4); }
+;
 
-var_declaration:
-    VAR IDENTIFIER EQUALS expr { $$ = create_var_node($2, $4); parse_tree = $$; }
-    | LET IDENTIFIER EQUALS expr { $$ = create_var_node($2, $4); parse_tree = $$; }
-    | CONST IDENTIFIER EQUALS expr { $$ = create_var_node($2, $4); parse_tree = $$; }
-    ;
+expr:
+    TRUE { $$ = create_bool_node(1); }
+    | FALSE { $$ = create_bool_node(0); }
+    | NOT expr { $$ = create_not_node($2); }
+    | expr AND expr { $$ = create_binop_node($1, $3, OP_AND); }
+    | expr OR expr { $$ = create_binop_node($1, $3, OP_OR); }
+    | IDENTIFIER { $$ = create_identifier_node($1); } // Assuming create_identifier_node function exists
+;
 
 %%
 
 void yyerror(const char* s) {
     fprintf(stderr, "Parse error: %s\n", s);
     exit(1);
-}
-
-Node* parse(FILE* fp) {
-    yyin = fp;
-    if (yyparse() == 0) {
-        return parse_tree;
-    } else {
-        return NULL;
-    }
 }

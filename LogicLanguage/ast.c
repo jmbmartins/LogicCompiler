@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ast.h"
+#include <string.h>  // Add this line
 
 Node* create_bool_node(int bool_val) {
     Node* node = malloc(sizeof(Node));
@@ -55,7 +56,7 @@ Node* create_for_node(Node* init, Node* cond, Node* increment, Node* body) {
 Node* create_var_node(char* name, Node* value) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_VAR;
-    node->var_decl.name = name;
+    node->var_decl.name = strdup(name);  // Make a dynamically allocated copy of name
     node->var_decl.value = value;
     return node;
 }
@@ -137,6 +138,9 @@ void free_node(Node* node) {
             free(node->var_decl.name); // Assuming name was dynamically allocated
             free_node(node->var_decl.value);
             break;
+        case NODE_IDENTIFIER: // Add this case
+            free(node->identifier);
+            break;
         default:
             break;
     }
@@ -144,3 +148,11 @@ void free_node(Node* node) {
     // Free the node itself
     free(node);
 }
+
+Node* create_identifier_node(char* identifier) {
+    Node* new_node = malloc(sizeof(Node));
+    new_node->type = NODE_IDENTIFIER;
+    new_node->identifier = strdup(identifier);
+    return new_node;
+}
+

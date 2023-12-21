@@ -2,12 +2,13 @@
 
 #ifndef AST_H
 #define AST_H
-
+#define NODE_IDENTIFIER 7  // Add this line, choose a unique number
 typedef enum { NODE_BOOL, NODE_NOT, NODE_BINOP, NODE_IF, NODE_WHILE, NODE_FOR, NODE_VAR, NODE_LET, NODE_CONST } NodeType;
 typedef enum { OP_AND, OP_OR } BinOpType;
 
 typedef struct Node {
     NodeType type;
+    char* identifier;  // Add this line
     union {
         int bool_val; // 1 for TRUE, 0 for FALSE
         struct {
@@ -49,5 +50,6 @@ Node* create_for_node(Node* init, Node* cond, Node* increment, Node* body);
 Node* create_var_node(char* name, Node* value);
 void free_node(Node* node);
 int evaluate(Node* node);
+Node* create_identifier_node(char* identifier);
 
 #endif // AST_H
