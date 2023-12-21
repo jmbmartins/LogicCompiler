@@ -1,1 +1,1 @@
-FALSE AND TRUE
+var x = FALSE;

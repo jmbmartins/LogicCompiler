@@ -1,69 +1,35 @@
 // tests.c
 #include <assert.h>
-#include <string.h>
 #include <stdio.h>
-#include <stdlib.h>  // Add this line
-#include "ast.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <string.h>
 
-void test_create_bool_node() {
-    Node* node = create_bool_node(1);
-    assert(node->type == NODE_BOOL);
-    assert(node->bool_val == 1);
-    free_node(node);
-}
 
-void test_create_not_node() {
-    Node* expr = create_bool_node(1);
-    Node* node = create_not_node(expr);
-    assert(node->type == NODE_NOT);
-    assert(node->not_expr.expr == expr);
-    free_node(node);
-}
+void test_interpret(const char* filename, int expected) {
+    char command[256];
+    sprintf(command, "./logic_compiler %s", filename);
+    FILE* pipe = popen(command, "r");
+    if (!pipe) {
+        printf("popen failed\n");
+        exit(1);
+    }
 
-void test_create_binop_node() {
-    Node* left = create_bool_node(1);
-    Node* right = create_bool_node(0);
-    Node* node = create_binop_node(left, right, OP_AND);
-    assert(node->type == NODE_BINOP);
-    assert(node->binop.left == left);
-    assert(node->binop.right == right);
-    assert(node->binop.op == OP_AND);
-    free_node(node);
-}
+    char buffer[256];
+    fgets(buffer, sizeof(buffer), pipe);
+    pclose(pipe);
 
-void test_create_var_node() {
-    char* name = strdup("test");  // Dynamically allocate name
-    Node* value = create_bool_node(1);
-    Node* node = create_var_node(name, value);
-    assert(node->type == NODE_VAR);
-    assert(strcmp(node->var_decl.name, "test") == 0);
-    assert(node->var_decl.value == value);
-    free_node(node);
-    free(name);  // Free name after the node is freed
-}
-
-void test_create_identifier_node() {
-    Node* node = create_identifier_node("x");
-    assert(node->type == NODE_IDENTIFIER);
-    assert(strcmp(node->identifier, "x") == 0);
-    free_node(node);
-}
-
-void test_evaluate() {
-    Node* left = create_bool_node(1);
-    Node* right = create_bool_node(0);
-    Node* node = create_binop_node(left, right, OP_AND);
-    assert(evaluate(node) == 0);
-    free_node(node);
+    int result;
+    sscanf(buffer, "Result: %d", &result);
+    printf("Result: %d\n", result);
+    assert(result == expected);
 }
 
 int main() {
-    test_create_bool_node();
-    test_create_not_node();
-    test_create_binop_node();
-    test_create_var_node();
-    test_create_identifier_node();
-    test_evaluate();
+    test_interpret("testsfiles/test1.txt", 1);  
+    test_interpret("testsfiles/test2.txt", 0);
+    test_interpret("testsfiles/test3.txt", 0);
     printf("All tests passed!\n");
     return 0;
 }

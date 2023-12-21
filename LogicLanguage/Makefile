@@ -20,6 +20,9 @@ lexer.c: lexer.l
 parser.c parser.h: parser.y
 	bison -d -o parser.c $^
 
+tests: tests.c logic_compiler
+	$(CC) $(CFLAGS) -o $@ tests.c
+
 clean:
 	rm -f $(OBJ) $(TARGET) lexer.c parser.c parser.h
 

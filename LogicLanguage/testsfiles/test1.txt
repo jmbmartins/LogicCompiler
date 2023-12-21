@@ -1,1 +1,1 @@
-TRUE
+var x = TRUE;
