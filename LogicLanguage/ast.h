@@ -1,23 +1,20 @@
-// ast.h
-
 #ifndef AST_H
 #define AST_H
-#define NODE_IDENTIFIER 7  // Add this line, choose a unique number
-typedef enum { NODE_BOOL, NODE_NOT, NODE_BINOP, NODE_IF, NODE_WHILE, NODE_FOR, NODE_VAR, NODE_LET, NODE_CONST } NodeType;
+
+typedef enum { NODE_BOOL, NODE_NOT, NODE_BINOP, NODE_IF, NODE_WHILE, NODE_FOR, NODE_VAR, NODE_IDENTIFIER, NODE_STATEMENTS } NodeType;
 typedef enum { OP_AND, OP_OR } BinOpType;
 
 typedef struct Node {
     NodeType type;
-    char* identifier;  // Add this line
     union {
-        int bool_val; // 1 for TRUE, 0 for FALSE
+        int bool_val;
         struct {
             struct Node* expr;
-        } not_expr; // Renamed from 'not' to 'not_expr'
+        } not_expr;
         struct {
             struct Node* left;
             struct Node* right;
-            BinOpType op; // OP_AND for AND, OP_OR for OR
+            BinOpType op;
         } binop;
         struct {
             struct Node* cond;
@@ -38,6 +35,11 @@ typedef struct Node {
             char* name;
             struct Node* value;
         } var_decl;
+        struct {
+            struct Node* statement;
+            struct Node* next;
+        } statements;
+        char* identifier;
     };
 } Node;
 
@@ -48,8 +50,10 @@ Node* create_if_node(Node* cond, Node* then_branch, Node* else_branch);
 Node* create_while_node(Node* cond, Node* body);
 Node* create_for_node(Node* init, Node* cond, Node* increment, Node* body);
 Node* create_var_node(char* name, Node* value);
+Node* create_identifier_node(char* identifier);
+Node* create_statements_node(Node* statement, Node* next);
+Node* append_statement(Node* statements, Node* statement);
 void free_node(Node* node);
 int evaluate(Node* node);
-Node* create_identifier_node(char* identifier);
 
 #endif // AST_H

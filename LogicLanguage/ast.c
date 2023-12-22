@@ -156,3 +156,23 @@ Node* create_identifier_node(char* identifier) {
     return new_node;
 }
 
+Node* create_statements_node(Node* statement, Node* next) {
+    Node* new_node = malloc(sizeof(Node));
+    new_node->type = NODE_STATEMENTS;
+    new_node->statements.statement = statement;
+    new_node->statements.next = next;
+    return new_node;
+}
+
+Node* append_statement(Node* statements, Node* statement) {
+    if (statements == NULL) {
+        return create_statements_node(statement, NULL);
+    }
+    Node* current = statements;
+    while (current->statements.next != NULL) {
+        current = current->statements.next;
+    }
+    current->statements.next = create_statements_node(statement, NULL);
+    return statements;
+}
+

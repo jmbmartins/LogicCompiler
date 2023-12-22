@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include "ast.h"
-#include <stdlib.h>  // Add this line
+#include <stdlib.h>
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -14,23 +14,23 @@ Node* parse_tree;
     Node* node;
     int bool_val;
     BinOpType binop;
-    char* strval;  // Added this line
+    char* strval;
 }
 
 %token <bool_val> TRUE FALSE
 %token <binop> AND OR
 %token IF THEN ELSE WHILE FOR VAR
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON
-%token <strval> IDENTIFIER  // Changed this line
+%token <strval> IDENTIFIER
 %token ASSIGN
-%token NOT  // Add this line
+%token NOT
 
-%type <node> expr statement
+%type <node> expr statement statements
 
 %%
 
 program:
-    statement { parse_tree = $1; }
+    statements { parse_tree = $1; }
 ;
 
 statement:
@@ -40,13 +40,18 @@ statement:
     | VAR IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_var_node($2, $4); }
 ;
 
+statements:
+    statement { $$ = $1; }
+    | statements statement { $$ = append_statement($1, $2); }
+;
+
 expr:
     TRUE { $$ = create_bool_node(1); }
     | FALSE { $$ = create_bool_node(0); }
     | NOT expr { $$ = create_not_node($2); }
     | expr AND expr { $$ = create_binop_node($1, $3, OP_AND); }
     | expr OR expr { $$ = create_binop_node($1, $3, OP_OR); }
-    | IDENTIFIER { $$ = create_identifier_node($1); } // Assuming create_identifier_node function exists
+    | IDENTIFIER { $$ = create_identifier_node($1); }
 ;
 
 %%
