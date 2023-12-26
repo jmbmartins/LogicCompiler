@@ -1,1 +1,1 @@
-var x = TRUE OR FALSE;
+var x = TRUE AND FALSE;
