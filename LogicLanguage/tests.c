@@ -6,7 +6,7 @@
 #include <string.h>
 
 void test_interpret(const char* filename, int expected) {
-    printf("Running test: %s\n", filename);  // Add this line
+    printf("Running test: %s\n", filename);
 
     char command[256];
     sprintf(command, "./logic_compiler %s", filename);
@@ -17,22 +17,25 @@ void test_interpret(const char* filename, int expected) {
     }
 
     char buffer[256];
-    fgets(buffer, sizeof(buffer), pipe);
+    int result;
+    while (fgets(buffer, sizeof(buffer), pipe)) {
+        int temp;
+        if (sscanf(buffer, "Result: %d", &temp) == 1) {
+            result = temp;
+        }
+    }
     pclose(pipe);
 
-    int result;
-    sscanf(buffer, "Result: %d", &result);
     printf("Result: %d\n", result);
     assert(result == expected);
 }
 
 int main() {
-    test_interpret("testsfiles/test_var1.txt", 1);
-    test_interpret("testsfiles/test_var2.txt", 0);
-    test_interpret("testsfiles/test_var3.txt", 1);
-    test_interpret("testsfiles/test_var4.txt", 0);
-    test_interpret("testsfiles/test_var5.txt", 1);
-    test_interpret("testsfiles/test_var6.txt", 0);
+    test_interpret("testsfiles/test_var_declaration.txt", 1);
+    test_interpret("testsfiles/test_var_reassignment.txt", 0);
+    test_interpret("testsfiles/test_var_expression.txt", 1);
+    test_interpret("testsfiles/test_var_usage.txt", 0);
+    test_interpret("testsfiles/test_var_multiple.txt", 0);
     printf("All tests passed!\n");
     return 0;
 }

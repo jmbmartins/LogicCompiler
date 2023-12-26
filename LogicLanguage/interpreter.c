@@ -3,7 +3,7 @@
 extern FILE* yyin;
 extern int yyparse();
 extern Node* parse_tree;
-int evaluate(Node* node); // Declare evaluate
+int evaluate(Node* node, SymbolTable* symbol_table); // Declare evaluate
 
 int interpret(const char* filename) {
     FILE* fp = fopen(filename, "r");
@@ -18,9 +18,31 @@ int interpret(const char* filename) {
         return -1;
     }
 
+    print_ast(parse_tree, 0);  // Print the AST
+
     fclose(fp);
 
-    int result = evaluate(parse_tree);
+    SymbolTable* symbol_table = create_symbol_table(); // Create a symbol table
+
+    int result = 0;  // Initialize result to 0
+
+    // If the parse_tree is a list of statements
+    if (parse_tree->type == NODE_STATEMENTS) {
+        Node* current = parse_tree;
+        while (current != NULL && current->statements.statement != NULL) {
+            int temp = evaluate(current->statements.statement, symbol_table);
+            if (current->statements.statement->type != NODE_VAR || current->statements.statement->type != NODE_ASSIGN) {
+                result = temp;  // Update result if the statement is a variable declaration or assignment
+            }
+            current = current->statements.next;
+        }
+    } else {
+        // If the parse_tree is a single statement
+        result = evaluate(parse_tree, symbol_table);
+    }
+
     free_node(parse_tree); // Free the parsed AST
-    return result;
+    free_symbol_table(symbol_table); // Free the symbol table
+
+    return result;  // Return the result of the last expression evaluated
 }

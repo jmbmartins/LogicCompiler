@@ -8,6 +8,10 @@ extern FILE* yyin;
 void yyerror(const char* s);
 
 Node* parse_tree;
+
+void print_ast(Node* node, int depth);  // Declare print_ast
+
+Node* create_assign_node(char* name, Node* value);  // Declare create_assign_node
 %}
 
 %union {
@@ -34,15 +38,16 @@ program:
 ;
 
 statement:
-    IF LPAREN expr RPAREN THEN LBRACE statement RBRACE ELSE LBRACE statement RBRACE { $$ = create_if_node($3, $7, $11); }
-    | WHILE LPAREN expr RPAREN LBRACE statement RBRACE { $$ = create_while_node($3, $6); }
-    | FOR LPAREN statement SEMICOLON expr SEMICOLON statement RPAREN LBRACE statement RBRACE { $$ = create_for_node($3, $5, $7, $10); }
+    IF LPAREN expr RPAREN THEN LBRACE statement RBRACE ELSE LBRACE statement RBRACE SEMICOLON { $$ = create_if_node($3, $7, $11); }
+    | WHILE LPAREN expr RPAREN LBRACE statement RBRACE SEMICOLON { $$ = create_while_node($3, $6); }
+    | FOR LPAREN statement SEMICOLON expr SEMICOLON statement RPAREN LBRACE statement RBRACE SEMICOLON { $$ = create_for_node($3, $5, $7, $10); }
     | VAR IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_var_node($2, $4); }
+    | IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_assign_node($1, $3); printf("Parser: Created assign node: %s = expr\n", $1); print_ast($$, 0); }  // Add this line
 ;
 
 statements:
-    statement { $$ = $1; }
-    | statements statement { $$ = append_statement($1, $2); }
+    statement { $$ = $1; print_ast($$, 0); }  // Add this line
+    | statements statement { $$ = append_statement($1, $2); print_ast($$, 0); }  // Add this line
 ;
 
 expr:
@@ -53,6 +58,7 @@ expr:
     | expr OR expr { $$ = create_binop_node($1, $3, OP_OR); }
     | IDENTIFIER { $$ = create_identifier_node($1); }
 ;
+
 
 %%
 

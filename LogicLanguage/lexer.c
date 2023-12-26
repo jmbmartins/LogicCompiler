@@ -355,8 +355,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 22
-#define YY_END_OF_BUFFER 23
+#define YY_NUM_RULES 21
+#define YY_END_OF_BUFFER 22
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -366,11 +366,11 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[54] =
     {   0,
-        0,    0,   23,   21,   20,   20,    6,    7,    8,   18,
-       19,   19,   19,   19,   19,   19,   19,   19,   19,   19,
-       19,   19,   15,   16,   19,   19,   19,   19,    2,   19,
-       19,   19,    9,   19,   19,   19,    1,   19,    3,   19,
-       19,   12,   19,   14,   19,   19,    4,   10,   11,   19,
+        0,    0,   22,   20,   19,   19,    6,    7,    8,   17,
+       18,   18,   18,   18,   18,   18,   18,   18,   18,   18,
+       18,   18,   15,   16,   18,   18,   18,   18,    2,   18,
+       18,   18,    9,   18,   18,   18,    1,   18,    3,   18,
+       18,   12,   18,   14,   18,   18,    4,   10,   11,   18,
         5,   13,    0
     } ;
 
@@ -843,35 +843,30 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 26 "lexer.l"
-{ return SEMICOLON; }
+{ return ASSIGN; printf("Lexer: Identified token: =\n"); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 27 "lexer.l"
-{ return ASSIGN; }
+{ yylval.strval = strdup(yytext); printf("Lexer: Identified token: %s\n", yytext); return IDENTIFIER; }
 	YY_BREAK
 case 19:
+/* rule 19 can match eol */
 YY_RULE_SETUP
 #line 28 "lexer.l"
-{ yylval.strval = strdup(yytext); return IDENTIFIER; }
+{ /* ignore whitespace */ }
 	YY_BREAK
 case 20:
-/* rule 20 can match eol */
 YY_RULE_SETUP
 #line 29 "lexer.l"
-{ /* ignore whitespace */ }
+{ fprintf(stderr, "Unrecognized character: %s\n", yytext); exit(1); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 30 "lexer.l"
-{ fprintf(stderr, "Unrecognized character: %s\n", yytext); exit(1); }
-	YY_BREAK
-case 22:
-YY_RULE_SETUP
-#line 32 "lexer.l"
+#line 31 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 875 "lexer.c"
+#line 870 "lexer.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1876,5 +1871,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 32 "lexer.l"
+#line 31 "lexer.l"
 

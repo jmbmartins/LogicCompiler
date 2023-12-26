@@ -1,8 +1,23 @@
 #ifndef AST_H
 #define AST_H
 
-typedef enum { NODE_BOOL, NODE_NOT, NODE_BINOP, NODE_IF, NODE_WHILE, NODE_FOR, NODE_VAR, NODE_IDENTIFIER, NODE_STATEMENTS } NodeType;
+typedef enum { NODE_BOOL, NODE_NOT, NODE_BINOP, NODE_IF, NODE_WHILE, NODE_FOR, NODE_VAR, NODE_IDENTIFIER, NODE_ASSIGN, NODE_STATEMENTS } NodeType;  // Add NODE_ASSIGN
 typedef enum { OP_AND, OP_OR } BinOpType;
+
+typedef struct Symbol {
+    char* name;
+    int value;
+    struct Symbol* next;
+} Symbol;
+
+typedef struct SymbolTable {
+    Symbol* head;
+} SymbolTable;
+
+typedef struct {
+    char* name;
+    struct Node* value;
+} Assign;
 
 typedef struct Node {
     NodeType type;
@@ -40,6 +55,7 @@ typedef struct Node {
             struct Node* next;
         } statements;
         char* identifier;
+        Assign assign;  // Add Assign assign
     };
 } Node;
 
@@ -54,6 +70,14 @@ Node* create_identifier_node(char* identifier);
 Node* create_statements_node(Node* statement, Node* next);
 Node* append_statement(Node* statements, Node* statement);
 void free_node(Node* node);
-int evaluate(Node* node);
+int evaluate(Node* node, SymbolTable* symbol_table);
+Symbol* lookup_symbol(SymbolTable* symbol_table, char* name);
+Symbol* create_symbol(char* name, int value);
+void add_symbol(SymbolTable* symbol_table, Symbol* symbol);
+
+// Added function declarations
+SymbolTable* create_symbol_table();
+void free_symbol_table(SymbolTable* symbol_table);
+void print_ast(Node* node, int depth);
 
 #endif // AST_H

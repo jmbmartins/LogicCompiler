@@ -1,0 +1,3 @@
+var x = TRUE;
+var y = FALSE;
+var z = x AND y;
