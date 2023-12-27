@@ -14,36 +14,24 @@ Mandatory requirement: successfully compile/interpret the tests.
 
 ------------------------------------------------------------------
 # Logic Compiler
-This project is a simple logic compiler that evaluates logical expressions involving `AND`, `OR`, and `NOT` operations on boolean values `TRUE` and `FALSE`.
+This is a simple logic compiler that interprets a language with boolean expressions and control flow structures.
 
 ## **Tokens:** The language have the following tokens:
-   - `AND`: Logical AND operation
-   - `OR`: Logical OR operation
-   - `NOT`: Logical NOT operation
-   - `TRUE`: Boolean value true
-   - `FALSE`: Boolean value false
-   - `(`: Left parenthesis
-   - `)`: Right parenthesis
+
+- Keywords: `AND`, `OR`, `NOT`, `TRUE`, `FALSE`, `if`, `else`, `then`, `for`, `while`, `var`
+- Symbols: `(`, `)`, `{`, `}`, `=`, `;`
+- Identifiers: Strings that start with a letter and are followed by any number of letters or digits.
+
 
 ## **Grammar:** Language Grammar could be defined as follows:
-  - `expr`: An expression, which can be a boolean value, a `NOT` expression, or a binary operation (`AND` or `OR`). Expressions can also be grouped using parentheses.
 
-  
-Backus-Naur Form (BNF):   
-```
-<expr> ::= <BOOL>
-         | NOT <expr>
-         | <expr> AND <expr>
-         | <expr> OR <expr>
-         | ( <expr> )
-```
+The language has the following grammar:
 
-Where:
-- `<BOOL>` is a boolean value (`TRUE` or `FALSE`).
-- `NOT <expr>` is a `NOT` operation on an expression.
-- `<expr> AND <expr>` is an `AND` operation between two expressions.
-- `<expr> OR <expr>` is an `OR` operation between two expressions.
-- `( <expr> )` is an expression grouped by parentheses.
+- `program`: A list of statements.
+- `statement`: An if-else statement, a while loop, a for loop, a variable declaration, or an assignment.
+- `statements`: A list of statements.
+- `expr`: A boolean value, a not expression, a binary operation, or an identifier.
+
 
 ## Files
 
@@ -55,6 +43,14 @@ Where:
 - `Makefile`: Defines the build rules for the project.
 - `test.c`: Contains a test program that runs the logic compiler on several test files and checks if the output matches the expected result.
 
+## Features
+
+The logic compiler can:
+
+- Parse and interpret boolean expressions with `AND`, `OR`, and `NOT` operators.
+- Handle control flow with `if-else` statements, `while` loops, and `for` loops.
+- Declare variables with the `var` keyword and assign values to them.
+- Reassign values to variables.
 
 ## Building and Running
 The project uses a Makefile for building the executable. Here's how you can build and run the project:
@@ -89,7 +85,7 @@ Then, run the test program with the following command:
 ```
 This will print the output of each test file and whether the test passed or failed.
 
-## Usage
+## Example Usage 1
 
 To use the logic compiler, write a logical expression in a text file using the tokens and grammar defined above. Then, run the logic compiler on the file using the command shown in the "Building and Running" section. The logic compiler will print the result of the expression.
 
@@ -97,7 +93,9 @@ Here's an example:
 
 1. Write your logical expression in a text file. For example, you might write the following in a file named `example.txt`:
 ```text
-NOT (TRUE AND FALSE) OR TRUE
+var x = TRUE;
+var y = FALSE;
+var z = x OR y;
 ```
 
 2. Run the logic compiler on the file:
@@ -109,7 +107,33 @@ NOT (TRUE AND FALSE) OR TRUE
 Output:
 The logic compiler will print the result of the expression:
 ```text
-TRUE
+Result: 1
+```
+
+## Example Usage 2
+
+
+1. Write your source code in a text file. For example:
+
+```
+var x = TRUE AND FALSE;
+if (x) then {
+    var y = NOT x;
+} else {
+    var y = x;
+};
+```
+
+2. Run the logic compiler with the source code file as an argument:
+
+```
+./logic_compiler your_source_code.txt
+```
+
+3. The logic compiler will interpret the source code and print the result of the last expression evaluated:
+
+```
+Result: 0
 ```
 
 
