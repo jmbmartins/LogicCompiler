@@ -85,7 +85,7 @@ Then, run the test program with the following command:
 ```
 This will print the output of each test file and whether the test passed or failed.
 
-## Example Usage 1
+## Example Usage 1 ( Declare Variables `var`)
 
 To use the logic compiler, write a logical expression in a text file using the tokens and grammar defined above. Then, run the logic compiler on the file using the command shown in the "Building and Running" section. The logic compiler will print the result of the expression.
 
@@ -110,7 +110,7 @@ The logic compiler will print the result of the expression:
 Result: 1
 ```
 
-## Example Usage 2
+## Example Usage 2 ( `if-else` Statements)
 
 
 1. Write your source code in a text file. For example:
@@ -141,5 +141,8 @@ if (x) then {
 ```
 Result: 0
 ```
+
+## Example Usage 3 ( `for` Loop)
+
 
 
