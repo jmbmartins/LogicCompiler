@@ -56,8 +56,9 @@ Node* create_for_node(Node* init, Node* cond, Node* increment, Node* body) {
 Node* create_var_node(char* name, Node* value) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_VAR;
-    node->var_decl.name = strdup(name);  // Make a dynamically allocated copy of name
+    node->var_decl.name = name;
     node->var_decl.value = value;
+    printf("Created var node with name: %s and value: %p\n", name, value);  // Print out the node
     return node;
 }
 
@@ -110,13 +111,35 @@ void free_symbol_table(SymbolTable* symbol_table) {
 }
 
 Node* create_assign_node(char* name, Node* value) {
-    printf("Creating assign node: %s = ", name);
-    print_ast(value, 0);  // Assuming print_ast is a function that prints an AST
     Node* node = malloc(sizeof(Node));
     node->type = NODE_ASSIGN;
     node->assign.name = strdup(name);  // Make a dynamically allocated copy of name
     node->assign.value = value;
+    // Print the name and value
+    printf("Created assign node with name: %s and value: ", name);
+    print_ast(value, 0);
     return node;
+}
+
+int interpret_assign_node(Node* node, SymbolTable* symbol_table) {
+    // Evaluate the right-hand side of the assignment
+    int value = evaluate(node->assign.value, symbol_table);
+
+    // Check if the symbol already exists in the symbol table
+    Symbol* symbol = lookup_symbol(symbol_table, node->assign.name);
+    if (symbol == NULL) {
+        // If the symbol does not exist, create and add it
+        symbol = create_symbol(node->assign.name, value);
+        add_symbol(symbol_table, symbol);
+    } else {
+        // If the symbol already exists, update its value
+        symbol->value = value;
+    }
+
+    printf("Assigned variable: %s = %d\n", node->assign.name, value);
+
+    // Return the value that was assigned
+    return value;
 }
 
 int evaluate(Node* node, SymbolTable* symbol_table) {
@@ -127,21 +150,30 @@ int evaluate(Node* node, SymbolTable* symbol_table) {
             printf("Bool value: %d\n", node->bool_val);
             return node->bool_val;
         case NODE_NOT:
-            return !evaluate(node->not_expr.expr, symbol_table); 
+            int not_val = !evaluate(node->not_expr.expr, symbol_table);
+            printf("NOT value: %d\n", not_val);
+            return not_val;
         case NODE_BINOP:
             int left_val = evaluate(node->binop.left, symbol_table);
             int right_val = evaluate(node->binop.right, symbol_table);
+            printf("Left value: %d, Right value: %d\n", left_val, right_val);
             switch (node->binop.op) {
                 case OP_AND:
-                    return left_val && right_val;
+                    int and_val = left_val && right_val;
+                    printf("AND value: %d\n", and_val);
+                    return and_val;
                 case OP_OR:
-                    return left_val || right_val;
+                    int or_val = left_val || right_val;
+                    printf("OR value: %d\n", or_val);
+                    return or_val;
                 default:
                     fprintf(stderr, "Invalid binary operator\n");
                     return 0;
             }
         case NODE_IF:
-            if (evaluate(node->if_expr.cond, symbol_table)) {
+            int cond_if = evaluate(node->if_expr.cond, symbol_table);
+            printf("IF condition: %d\n", cond_if);
+            if (cond_if) {
                 return evaluate(node->if_expr.then_branch, symbol_table);
             } else {
                 return evaluate(node->if_expr.else_branch, symbol_table);
@@ -150,11 +182,13 @@ int evaluate(Node* node, SymbolTable* symbol_table) {
             while (evaluate(node->while_loop.cond, symbol_table)) {
                 evaluate(node->while_loop.body, symbol_table);
             }
+            printf("Finished WHILE loop\n");
             return 0; // While loops do not return a value
         case NODE_FOR:
             for (evaluate(node->for_loop.init, symbol_table); evaluate(node->for_loop.cond, symbol_table); evaluate(node->for_loop.increment, symbol_table)) {
                 evaluate(node->for_loop.body, symbol_table);
             }
+            printf("Finished FOR loop\n");
             return 0; // For loops do not return a value
         case NODE_VAR: {
             int value = evaluate(node->var_decl.value, symbol_table);
@@ -178,16 +212,10 @@ int evaluate(Node* node, SymbolTable* symbol_table) {
             return symbol->value;
         }
         case NODE_ASSIGN: {
-            int value = evaluate(node->assign.value, symbol_table);
-            printf("Evaluator: Evaluated assign node: %s = %d\n", node->assign.name, value);
-            Symbol* symbol = lookup_symbol(symbol_table, node->assign.name);
-            if (symbol == NULL) {
-                printf("Error: Attempted to assign to undeclared variable: %s\n", node->assign.name);
-                exit(1);
-            }
-            symbol->value = value;
-            printf("Assigned variable: %s = %d\n", node->assign.name, value);
-            return value;
+            int value = interpret_assign_node(node, symbol_table);
+            printf("Assignment value: %d\n", value);
+            return value; // return the value from the assignment
+            break;
         }
         default:
             fprintf(stderr, "Invalid node type\n");
@@ -251,16 +279,32 @@ Node* create_identifier_node(char* identifier) {
 }
 
 Node* create_statements_node(Node* statement, Node* next) {
-    Node* new_node = malloc(sizeof(Node));
-    new_node->type = NODE_STATEMENTS;
-    new_node->statements.statement = statement;
-    new_node->statements.next = next;
-    return new_node;
+    Node* node = malloc(sizeof(Node));
+    node->type = NODE_STATEMENTS;
+    node->statements.statement = statement;
+
+    // Check if next statement already exists in the list
+    Node* check = next;
+    while (check != NULL) {
+        if (check == statement) {
+            printf("Statement already exists in the list. Not appending.\n");
+            node->statements.next = next;
+            return node;
+        }
+        if (check->type == NODE_STATEMENTS) {
+            check = check->statements.next;
+        } else {
+            break;
+        }
+    }
+
+    node->statements.next = next;
+    return node;
 }
 
 Node* append_statement(Node* statements, Node* statement) {
-    printf("ENTER IN THIS FUNCTION APPEND");
-    // printf("Appending statement of type: %d\n", statement->type);
+    printf("Appending statement of type: %d\n", statement->type);
+    printf("Statement: %p\n", statement);  // Print out the statement
     if (statement == NULL) {
         printf("Error: statement is NULL\n");
         return statements;
@@ -269,11 +313,41 @@ Node* append_statement(Node* statements, Node* statement) {
         printf("Error: statements is NULL\n");
         return create_statements_node(statement, NULL);
     }
+
+    // Check if statement already exists in the list
+    Node* check = statements;
+    while (check != NULL) {
+        if (check == statement) {
+            printf("Statement already exists in the list. Not appending.\n");
+            return statements;
+        }
+        if (check->type == NODE_STATEMENTS) {
+            check = check->statements.next;
+        } else {
+            break;
+        }
+    }
+
+    // Append statement to the list
     Node* current = statements;
     while (current->statements.next != NULL) {
         current = current->statements.next;
     }
     current->statements.next = create_statements_node(statement, NULL);
+    printf("Appended statement of type: %d\n", statement->type);
+
+    // Print the statements list
+    printf("Statements list after appending:\n");
+    current = statements;
+    while (current != NULL) {
+        printf("Statement of type: %d\n", current->type);
+        if (current->type == NODE_STATEMENTS) {
+            current = current->statements.next;
+        } else {
+            break;
+        }
+    }
+
     return statements;
 }
 

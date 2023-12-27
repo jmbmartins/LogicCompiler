@@ -1150,7 +1150,7 @@ yyreduce:
 
   case 8: /* statements: statement  */
 #line 49 "parser.y"
-              { (yyval.node) = (yyvsp[0].node); print_ast((yyval.node), 0); }
+              { (yyval.node) = create_statements_node((yyvsp[0].node), NULL); print_ast((yyval.node), 0); }
 #line 1155 "parser.c"
     break;
 

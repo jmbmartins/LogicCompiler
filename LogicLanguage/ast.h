@@ -79,5 +79,6 @@ void add_symbol(SymbolTable* symbol_table, Symbol* symbol);
 SymbolTable* create_symbol_table();
 void free_symbol_table(SymbolTable* symbol_table);
 void print_ast(Node* node, int depth);
+int interpret_assign_node(Node* node, SymbolTable* symbol_table);
 
 #endif // AST_H

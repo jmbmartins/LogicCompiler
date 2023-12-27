@@ -46,7 +46,7 @@ statement:
 ;
 
 statements:
-    statement { $$ = $1; print_ast($$, 0); }  // Add this line
+    statement { $$ = create_statements_node($1, NULL); print_ast($$, 0); }  // Create a statements node
     | statements statement { $$ = append_statement($1, $2); print_ast($$, 0); }  // Add this line
 ;
 

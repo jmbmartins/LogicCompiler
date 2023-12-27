@@ -23,7 +23,7 @@
 "var"   { return VAR; }
 "{"     { return LBRACE; }
 "}"     { return RBRACE; }
-"="     { return ASSIGN; printf("Lexer: Identified token: =\n"); }
+"="     { printf("Lexer: Identified token: =\n"); return ASSIGN; }  // Moved printf before return
 [a-zA-Z][a-zA-Z0-9]* { yylval.strval = strdup(yytext); printf("Lexer: Identified token: %s\n", yytext); return IDENTIFIER; }
 [ \t\n] { /* ignore whitespace */ }
 .       { fprintf(stderr, "Unrecognized character: %s\n", yytext); exit(1); }

@@ -1,2 +1,2 @@
-var x = TRUE;
-x = FALSE;
+var x = FALSE;
+x = NOT x;

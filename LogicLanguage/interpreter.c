@@ -30,10 +30,7 @@ int interpret(const char* filename) {
     if (parse_tree->type == NODE_STATEMENTS) {
         Node* current = parse_tree;
         while (current != NULL && current->statements.statement != NULL) {
-            int temp = evaluate(current->statements.statement, symbol_table);
-            if (current->statements.statement->type != NODE_VAR || current->statements.statement->type != NODE_ASSIGN) {
-                result = temp;  // Update result if the statement is a variable declaration or assignment
-            }
+            result = evaluate(current->statements.statement, symbol_table);  // Always update result
             current = current->statements.next;
         }
     } else {

@@ -843,7 +843,7 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 26 "lexer.l"
-{ return ASSIGN; printf("Lexer: Identified token: =\n"); }
+{ printf("Lexer: Identified token: =\n"); return ASSIGN; }  // Moved printf before return
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
