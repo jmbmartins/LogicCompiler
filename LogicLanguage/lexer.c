@@ -854,7 +854,7 @@ case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
 #line 28 "lexer.l"
-{ printf("Lexer: Ignoring whitespace\n"); /* ignore whitespace */ }
+{ /* ignore whitespace */ }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP

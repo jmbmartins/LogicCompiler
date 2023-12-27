@@ -1,8 +1,8 @@
-VAR x = TRUE;
-VAR y = FALSE;
-VAR z = FALSE;
-IF (x AND y) THEN {
+var x = TRUE;
+var y = FALSE;
+var z = FALSE;
+if (x AND y) then {
     z = TRUE;
-} ELSE {
+} else {
     z = FALSE;
 };

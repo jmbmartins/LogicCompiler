@@ -1,12 +1,12 @@
-VAR x = TRUE;
-VAR y = FALSE;
-VAR z = FALSE;
-IF (x) THEN {
-    IF (y) THEN {
+var x = TRUE;
+var y = FALSE;
+var z = FALSE;
+if (x) then {
+    if (y) then {
         z = TRUE;
-    } ELSE {
+    } else {
         z = FALSE;
     };
-} ELSE {
+} else {
     z = TRUE;
 };

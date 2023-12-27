@@ -25,7 +25,7 @@
 "}"     { printf("Lexer: Identified token: }\n"); return RBRACE; }
 "="     { printf("Lexer: Identified token: =\n"); return ASSIGN; }  
 [a-zA-Z][a-zA-Z0-9]* { yylval.strval = strdup(yytext); printf("Lexer: Identified token: %s\n", yytext); return IDENTIFIER; }
-[ \t\n] { printf("Lexer: Ignoring whitespace\n"); /* ignore whitespace */ }
+[ \t\n] { /* ignore whitespace */ }
 .       { fprintf(stderr, "Unrecognized character: %s\n", yytext); exit(1); }
 
 %%
