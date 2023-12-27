@@ -110,27 +110,28 @@ TRUE
 
 ## Example Usage 2
 
+
 1. Write your source code in a text file. For example:
 
-    ```
-    var x = TRUE AND FALSE;
-    if (x) then {
-        var y = NOT x;
-    } else {
-        var y = x;
-    };
-    ```
+```
+var x = TRUE AND FALSE;
+if (x) then {
+    var y = NOT x;
+} else {
+    var y = x;
+};
+```
 
 2. Run the logic compiler with the source code file as an argument:
 
-    ```
-    ./logic_compiler your_source_code.txt
-    ```
+```
+./logic_compiler your_source_code.txt
+```
 
 3. The logic compiler will interpret the source code and print the result of the last expression evaluated:
 
-    ```
-    Result: 0
-    ```
+```
+Result: 0
+```
 
 
