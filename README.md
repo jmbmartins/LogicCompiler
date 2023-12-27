@@ -116,11 +116,17 @@ Result: 1
 1. Write your source code in a text file. For example:
 
 ```
-var x = TRUE AND FALSE;
+var x = TRUE;
+var y = FALSE;
+var z = FALSE;
 if (x) then {
-    var y = NOT x;
+    if (y) then {
+        z = TRUE;
+    } else {
+        z = FALSE;
+    };
 } else {
-    var y = x;
+    z = TRUE;
 };
 ```
 
