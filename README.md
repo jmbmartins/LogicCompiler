@@ -93,7 +93,9 @@ Here's an example:
 
 1. Write your logical expression in a text file. For example, you might write the following in a file named `example.txt`:
 ```text
-var x = TRUE AND FALSE;
+var x = TRUE;
+var y = FALSE;
+var z = x OR y;
 ```
 
 2. Run the logic compiler on the file:
@@ -105,7 +107,7 @@ var x = TRUE AND FALSE;
 Output:
 The logic compiler will print the result of the expression:
 ```text
-Result: 0
+Result: 1
 ```
 
 ## Example Usage 2
