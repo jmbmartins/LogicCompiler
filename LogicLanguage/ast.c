@@ -217,6 +217,14 @@ int evaluate(Node* node, SymbolTable* symbol_table) {
             return value; // return the value from the assignment
             break;
         }
+        case NODE_STATEMENTS:
+            Node* current = node;
+            while (current != NULL) {
+                evaluate(current->statements.statement, symbol_table);
+                current = current->statements.next;
+            }
+            return 0; // Statements do not return a value
+            break;
         default:
             fprintf(stderr, "Invalid node type\n");
             return 0;

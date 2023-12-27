@@ -1,0 +1,6 @@
+var counter = TRUE;
+var sum = FALSE;
+while (counter) {
+    sum = TRUE;
+    counter = FALSE;
+};

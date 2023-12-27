@@ -45,6 +45,11 @@ int main() {
     test_interpret("testsfiles/if-else_tests/nested_if-else.txt", 0);
     test_interpret("testsfiles/if-else_tests/simple_if-else.txt", 1);
 
+    // New loop tests
+    printf("\nRunning loop tests...\n");
+    test_interpret("testsfiles/loop_tests/for_loop.txt", 0);
+    test_interpret("testsfiles/loop_tests/while_loop.txt", 0);
+
     printf("\nAll tests passed!\n");
     return 0;
 }

@@ -46,7 +46,7 @@ init_expr:
 
 statement:
     IF LPAREN expr RPAREN THEN LBRACE statement RBRACE ELSE LBRACE statement RBRACE SEMICOLON { $$ = create_if_node($3, $7, $11); printf("Parser: Parsed if-else statement\n"); }
-    | WHILE LPAREN expr RPAREN LBRACE statement RBRACE SEMICOLON { $$ = create_while_node($3, $6); printf("Parser: Parsed while statement\n"); }
+    | WHILE LPAREN expr RPAREN LBRACE statements RBRACE SEMICOLON { $$ = create_while_node($3, $6); printf("Parser: Parsed while statement\n"); }
     | FOR LPAREN init_expr SEMICOLON expr SEMICOLON init_expr RPAREN LBRACE statement RBRACE SEMICOLON { $$ = create_for_node($3, $5, $7, $10); printf("Parser: Parsed for statement\n"); }
     | VAR IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_var_node($2, $4); printf("Parser: Parsed variable declaration\n"); }
     | IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_assign_node($1, $3); printf("Parser: Created assign node: %s = expr\n", $1); print_ast($$, 0); }

@@ -3,8 +3,9 @@ CFLAGS = -Wall -Wextra -g
 LDFLAGS =
 OBJ = ast.o lexer.o parser.o interpreter.o main.o
 TARGET = logic_compiler
+TESTS = tests
 
-all: $(TARGET)
+all: $(TARGET) $(TESTS)
 
 $(TARGET): $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $^
@@ -20,10 +21,10 @@ lexer.c: lexer.l
 parser.c parser.h: parser.y
 	bison -d -o parser.c $^
 
-tests: tests.c logic_compiler
+$(TESTS): tests.c $(TARGET)
 	$(CC) $(CFLAGS) -o $@ tests.c
 
 clean:
-	rm -f $(OBJ) $(TARGET) lexer.c parser.c parser.h lex.yy.h tests
+	rm -f $(OBJ) $(TARGET) lexer.c parser.c parser.h lex.yy.h $(TESTS)
 
 .PHONY: all clean
