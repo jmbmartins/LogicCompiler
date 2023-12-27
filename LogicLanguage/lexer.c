@@ -763,87 +763,87 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 9 "lexer.l"
-{ return AND; }
+{ printf("Lexer: Identified token: AND\n"); return AND; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 10 "lexer.l"
-{ return OR; }
+{ printf("Lexer: Identified token: OR\n"); return OR; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 11 "lexer.l"
-{ return NOT; }
+{ printf("Lexer: Identified token: NOT\n"); return NOT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 12 "lexer.l"
-{ return TRUE; }
+{ printf("Lexer: Identified token: TRUE\n"); return TRUE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 13 "lexer.l"
-{ return FALSE; }
+{ printf("Lexer: Identified token: FALSE\n"); return FALSE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 14 "lexer.l"
-{ return LPAREN; }
+{ printf("Lexer: Identified token: (\n"); return LPAREN; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 15 "lexer.l"
-{ return RPAREN; }
+{ printf("Lexer: Identified token: )\n"); return RPAREN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 16 "lexer.l"
-{ return SEMICOLON; }
+{ printf("Lexer: Identified token: ;\n"); return SEMICOLON; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 18 "lexer.l"
-{ return IF; }
+{ printf("Lexer: Identified token: if\n"); return IF; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 19 "lexer.l"
-{ return ELSE; }
+{ printf("Lexer: Identified token: else\n"); return ELSE; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 20 "lexer.l"
-{ return THEN; }
+{ printf("Lexer: Identified token: then\n"); return THEN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 21 "lexer.l"
-{ return FOR; }
+{ printf("Lexer: Identified token: for\n"); return FOR; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 22 "lexer.l"
-{ return WHILE; }
+{ printf("Lexer: Identified token: while\n"); return WHILE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 23 "lexer.l"
-{ return VAR; }
+{ printf("Lexer: Identified token: var\n"); return VAR; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 24 "lexer.l"
-{ return LBRACE; }
+{ printf("Lexer: Identified token: {\n"); return LBRACE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 25 "lexer.l"
-{ return RBRACE; }
+{ printf("Lexer: Identified token: }\n"); return RBRACE; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 26 "lexer.l"
-{ printf("Lexer: Identified token: =\n"); return ASSIGN; }  // Moved printf before return
+{ printf("Lexer: Identified token: =\n"); return ASSIGN; }  
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
@@ -854,7 +854,7 @@ case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
 #line 28 "lexer.l"
-{ /* ignore whitespace */ }
+{ printf("Lexer: Ignoring whitespace\n"); /* ignore whitespace */ }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP

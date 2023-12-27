@@ -31,11 +31,11 @@ void test_interpret(const char* filename, int expected) {
 }
 
 int main() {
-    test_interpret("testsfiles/test_var_declaration.txt", 1);
-    test_interpret("testsfiles/test_var_reassignment.txt", 1);
-    test_interpret("testsfiles/test_var_expression.txt", 0);
-    test_interpret("testsfiles/test_var_usage.txt", 1);
-    test_interpret("testsfiles/test_var_multiple.txt", 1);
+    test_interpret("testsfiles/declaration_tests/test_var_declaration.txt", 1);
+    test_interpret("testsfiles/declaration_tests/test_var_reassignment.txt", 1);
+    test_interpret("testsfiles/declaration_tests/test_var_expression.txt", 0);
+    test_interpret("testsfiles/declaration_tests/test_var_usage.txt", 1);
+    test_interpret("testsfiles/declaration_tests/test_var_multiple.txt", 1);
     printf("All tests passed!\n");
     return 0;
 }

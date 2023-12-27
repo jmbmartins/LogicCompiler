@@ -1114,31 +1114,31 @@ yyreduce:
     {
   case 2: /* program: statements  */
 #line 37 "parser.y"
-               { parse_tree = (yyvsp[0].node); }
+               { parse_tree = (yyvsp[0].node); printf("Parser: Parsed program\n"); }
 #line 1119 "parser.c"
     break;
 
   case 3: /* statement: IF LPAREN expr RPAREN THEN LBRACE statement RBRACE ELSE LBRACE statement RBRACE SEMICOLON  */
 #line 41 "parser.y"
-                                                                                              { (yyval.node) = create_if_node((yyvsp[-10].node), (yyvsp[-6].node), (yyvsp[-2].node)); }
+                                                                                              { (yyval.node) = create_if_node((yyvsp[-10].node), (yyvsp[-6].node), (yyvsp[-2].node)); printf("Parser: Parsed if-else statement\n"); }
 #line 1125 "parser.c"
     break;
 
   case 4: /* statement: WHILE LPAREN expr RPAREN LBRACE statement RBRACE SEMICOLON  */
 #line 42 "parser.y"
-                                                                 { (yyval.node) = create_while_node((yyvsp[-5].node), (yyvsp[-2].node)); }
+                                                                 { (yyval.node) = create_while_node((yyvsp[-5].node), (yyvsp[-2].node)); printf("Parser: Parsed while statement\n"); }
 #line 1131 "parser.c"
     break;
 
   case 5: /* statement: FOR LPAREN statement SEMICOLON expr SEMICOLON statement RPAREN LBRACE statement RBRACE SEMICOLON  */
 #line 43 "parser.y"
-                                                                                                       { (yyval.node) = create_for_node((yyvsp[-9].node), (yyvsp[-7].node), (yyvsp[-5].node), (yyvsp[-2].node)); }
+                                                                                                       { (yyval.node) = create_for_node((yyvsp[-9].node), (yyvsp[-7].node), (yyvsp[-5].node), (yyvsp[-2].node)); printf("Parser: Parsed for statement\n"); }
 #line 1137 "parser.c"
     break;
 
   case 6: /* statement: VAR IDENTIFIER ASSIGN expr SEMICOLON  */
 #line 44 "parser.y"
-                                           { (yyval.node) = create_var_node((yyvsp[-3].strval), (yyvsp[-1].node)); }
+                                           { (yyval.node) = create_var_node((yyvsp[-3].strval), (yyvsp[-1].node)); printf("Parser: Parsed variable declaration\n"); }
 #line 1143 "parser.c"
     break;
 
@@ -1150,49 +1150,49 @@ yyreduce:
 
   case 8: /* statements: statement  */
 #line 49 "parser.y"
-              { (yyval.node) = create_statements_node((yyvsp[0].node), NULL); print_ast((yyval.node), 0); }
+              { (yyval.node) = create_statements_node((yyvsp[0].node), NULL); printf("Parser: Parsed single statement\n"); print_ast((yyval.node), 0); }
 #line 1155 "parser.c"
     break;
 
   case 9: /* statements: statements statement  */
 #line 50 "parser.y"
-                           { (yyval.node) = append_statement((yyvsp[-1].node), (yyvsp[0].node)); print_ast((yyval.node), 0); }
+                           { (yyval.node) = append_statement((yyvsp[-1].node), (yyvsp[0].node)); printf("Parser: Parsed multiple statements\n"); print_ast((yyval.node), 0); }
 #line 1161 "parser.c"
     break;
 
   case 10: /* expr: TRUE  */
 #line 54 "parser.y"
-         { (yyval.node) = create_bool_node(1); }
+         { (yyval.node) = create_bool_node(1); printf("Parser: Parsed TRUE\n"); }
 #line 1167 "parser.c"
     break;
 
   case 11: /* expr: FALSE  */
 #line 55 "parser.y"
-            { (yyval.node) = create_bool_node(0); }
+            { (yyval.node) = create_bool_node(0); printf("Parser: Parsed FALSE\n"); }
 #line 1173 "parser.c"
     break;
 
   case 12: /* expr: NOT expr  */
 #line 56 "parser.y"
-               { (yyval.node) = create_not_node((yyvsp[0].node)); }
+               { (yyval.node) = create_not_node((yyvsp[0].node)); printf("Parser: Parsed NOT expression\n"); }
 #line 1179 "parser.c"
     break;
 
   case 13: /* expr: expr AND expr  */
 #line 57 "parser.y"
-                    { (yyval.node) = create_binop_node((yyvsp[-2].node), (yyvsp[0].node), OP_AND); }
+                    { (yyval.node) = create_binop_node((yyvsp[-2].node), (yyvsp[0].node), OP_AND); printf("Parser: Parsed AND expression\n"); }
 #line 1185 "parser.c"
     break;
 
   case 14: /* expr: expr OR expr  */
 #line 58 "parser.y"
-                   { (yyval.node) = create_binop_node((yyvsp[-2].node), (yyvsp[0].node), OP_OR); }
+                   { (yyval.node) = create_binop_node((yyvsp[-2].node), (yyvsp[0].node), OP_OR); printf("Parser: Parsed OR expression\n"); }
 #line 1191 "parser.c"
     break;
 
   case 15: /* expr: IDENTIFIER  */
 #line 59 "parser.y"
-                 { (yyval.node) = create_identifier_node((yyvsp[0].strval)); }
+                 { (yyval.node) = create_identifier_node((yyvsp[0].strval)); printf("Parser: Parsed identifier: %s\n", (yyvsp[0].strval)); }
 #line 1197 "parser.c"
     break;
 
@@ -1390,7 +1390,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 63 "parser.y"
+#line 62 "parser.y"
 
 
 void yyerror(const char* s) {

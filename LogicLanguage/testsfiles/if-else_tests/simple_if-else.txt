@@ -1,0 +1,7 @@
+var x = TRUE;
+var y = FALSE;
+if (x) then {
+    y = TRUE;
+} else {
+    y = FALSE;
+};

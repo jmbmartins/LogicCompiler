@@ -1,0 +1,8 @@
+VAR x = TRUE;
+VAR y = FALSE;
+VAR z = FALSE;
+IF (x AND y) THEN {
+    z = TRUE;
+} ELSE {
+    z = FALSE;
+};
