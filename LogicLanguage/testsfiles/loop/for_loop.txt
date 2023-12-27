@@ -1,0 +1,4 @@
+var y = FALSE;
+for (var x = TRUE; x; x = FALSE) {
+    y = TRUE;
+};

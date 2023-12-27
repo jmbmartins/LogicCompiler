@@ -15,7 +15,7 @@ $(TARGET): $(OBJ)
 lexer.o: lexer.c parser.h
 
 lexer.c: lexer.l
-	flex -o $@ $^
+	flex --header-file=lex.yy.h -o $@ $^
 
 parser.c parser.h: parser.y
 	bison -d -o parser.c $^
@@ -24,6 +24,6 @@ tests: tests.c logic_compiler
 	$(CC) $(CFLAGS) -o $@ tests.c
 
 clean:
-	rm -f $(OBJ) $(TARGET) lexer.c parser.c parser.h
+	rm -f $(OBJ) $(TARGET) lexer.c parser.c parser.h lex.yy.h tests
 
 .PHONY: all clean

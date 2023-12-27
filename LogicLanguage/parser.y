@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "ast.h"
 #include <stdlib.h>
+#include "lex.yy.h"  // Include the Flex header
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -29,7 +30,7 @@ Node* create_assign_node(char* name, Node* value);  // Declare create_assign_nod
 %token ASSIGN
 %token NOT
 
-%type <node> expr statement statements
+%type <node> expr statement statements init_expr
 
 %%
 
@@ -37,12 +38,19 @@ program:
     statements { parse_tree = $1; printf("Parser: Parsed program\n"); }
 ;
 
+init_expr:
+    VAR IDENTIFIER ASSIGN expr { $$ = create_var_node($2, $4); printf("Parser: Parsed variable declaration\n"); }
+    | IDENTIFIER ASSIGN expr { $$ = create_assign_node($1, $3); printf("Parser: Created assign node: %s = expr\n", $1); }
+    | expr { $$ = $1; }
+;
+
 statement:
     IF LPAREN expr RPAREN THEN LBRACE statement RBRACE ELSE LBRACE statement RBRACE SEMICOLON { $$ = create_if_node($3, $7, $11); printf("Parser: Parsed if-else statement\n"); }
     | WHILE LPAREN expr RPAREN LBRACE statement RBRACE SEMICOLON { $$ = create_while_node($3, $6); printf("Parser: Parsed while statement\n"); }
-    | FOR LPAREN statement SEMICOLON expr SEMICOLON statement RPAREN LBRACE statement RBRACE SEMICOLON { $$ = create_for_node($3, $5, $7, $10); printf("Parser: Parsed for statement\n"); }
+    | FOR LPAREN init_expr SEMICOLON expr SEMICOLON init_expr RPAREN LBRACE statement RBRACE SEMICOLON { $$ = create_for_node($3, $5, $7, $10); printf("Parser: Parsed for statement\n"); }
     | VAR IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_var_node($2, $4); printf("Parser: Parsed variable declaration\n"); }
-    | IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_assign_node($1, $3); printf("Parser: Created assign node: %s = expr\n", $1); print_ast($$, 0); }  
+    | IDENTIFIER ASSIGN expr SEMICOLON { $$ = create_assign_node($1, $3); printf("Parser: Created assign node: %s = expr\n", $1); print_ast($$, 0); }
+    | error SEMICOLON { fprintf(stderr, "Syntax error at line %d\n", yylineno); yyerrok; }
 ;
 
 statements:
@@ -63,5 +71,10 @@ expr:
 
 void yyerror(const char* s) {
     fprintf(stderr, "Parse error: %s\n", s);
+    if (yychar < 256) {
+        fprintf(stderr, "Unexpected token: %c\n", yychar);
+    } else {
+        fprintf(stderr, "Unexpected token number: %d\n", yychar);
+    }
     exit(1);
 }
