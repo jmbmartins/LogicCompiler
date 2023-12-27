@@ -93,7 +93,7 @@ Here's an example:
 
 1. Write your logical expression in a text file. For example, you might write the following in a file named `example.txt`:
 ```text
-NOT (TRUE AND FALSE) OR TRUE
+var x = TRUE AND FALSE;
 ```
 
 2. Run the logic compiler on the file:
@@ -105,7 +105,7 @@ NOT (TRUE AND FALSE) OR TRUE
 Output:
 The logic compiler will print the result of the expression:
 ```text
-TRUE
+Result: 0
 ```
 
 ## Example Usage 2
