@@ -138,6 +138,20 @@ if (x) then {
 
 3. The logic compiler will interpret the source code and print the result of the last expression evaluated:
 
+Here's a step-by-step explanation:
+
+1. Three variables `x`, `y`, and `z` are declared and initialized. `x` is `TRUE`, `y` and `z` are `FALSE`.
+
+2. The first `if` statement checks if `x` is `TRUE`. Since `x` is `TRUE`, the code inside the `then` block is executed.
+
+3. Inside the `then` block, there's another `if` statement that checks if `y` is `TRUE`. Since `y` is `FALSE`, the code inside the `else` block is executed.
+
+4. In the `else` block, `z` is assigned the value `FALSE`.
+
+5. The program ends after executing the `if-else` statement. In this language, the result of the program is the value of the last expression evaluated. In this case, the last expression is `z = FALSE;` inside the `else` block. Since `FALSE` is equivalent to `0`, the result of the program is `0`.
+
+So, the final values of the variables `x`, `y`, and `z` are `TRUE`, `FALSE`, and `FALSE` respectively, and the result of the program is `0`.
+
 ```
 Result: 0
 ```
