@@ -157,5 +157,37 @@ Result: 0
 
 ## Example Usage 3 ( `for` Loop)
 
+1. Write your source code in a text file. For example:
 
+```
+var y = FALSE;
+for (var x = TRUE; x; x = FALSE) {
+    y = TRUE;
+};
+```
+
+2. Run the logic compiler with the source code file as an argument:
+
+```
+./logic_compiler your_source_code.txt
+```
+
+3. The logic compiler will interpret the source code and print the result of the last expression evaluated:
+
+Here's a step-by-step explanation:
+
+1. A variable `y` is declared and initialized to `FALSE`.
+
+2. A `for` loop is started with a new variable `x` declared and initialized to `TRUE`. The loop condition is `x`, and the loop update is `x = FALSE`.
+
+3. Inside the `for` loop, `y` is assigned the value `TRUE`.
+
+4. On the next iteration, `x` is set to `FALSE` as per the loop update. Since the loop condition `x` is now `FALSE`, the loop ends.
+
+5. The program ends after executing the `for` loop. In this language, the result of the program is the value of the last expression evaluated. In this case, the last expression is `x = FALSE;` in the loop update. Since `FALSE` is equivalent to `0`, the result of the program is `0`.
+
+So, the final values of the variables `x` and `y` are `FALSE` and `TRUE` respectively, and the result of the program is:
+```
+Result: 0
+```
 
