@@ -191,3 +191,42 @@ So, the final values of the variables `x` and `y` are `FALSE` and `TRUE` respect
 Result: 0
 ```
 
+
+## Example Usage 4 ( `while` Loop)
+
+1. Write your source code in a text file. For example:
+
+```
+var counter = TRUE;
+var sum = FALSE;
+while (counter) {
+    sum = TRUE;
+    counter = FALSE;
+};
+```
+
+2. Run the logic compiler with the source code file as an argument:
+
+```
+./logic_compiler your_source_code.txt
+```
+
+3. The logic compiler will interpret the source code and print the result of the last expression evaluated:
+
+Here's a step-by-step explanation:
+
+1. Two variables `counter` and `sum` are declared and initialized. `counter` is `TRUE` and `sum` is `FALSE`.
+
+2. A `while` loop is started with the condition `counter`.
+
+3. Inside the `while` loop, `sum` is assigned the value `TRUE` and `counter` is set to `FALSE`.
+
+4. On the next iteration, since the loop condition `counter` is now `FALSE`, the loop ends.
+
+5. The program ends after executing the `while` loop. In this language, the result of the program is the value of the last expression evaluated. In this case, the last expression is `counter = FALSE;` inside the `while` loop. Since `FALSE` is equivalent to `0`, the result of the program is `0`.
+
+So, the final values of the variables `counter` and `sum` are `FALSE` and `TRUE` respectively, and the result of the program is:
+```
+Result: 0
+```
+
