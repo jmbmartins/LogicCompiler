@@ -150,8 +150,7 @@ Here's a step-by-step explanation:
 
 5. The program ends after executing the `if-else` statement. In this language, the result of the program is the value of the last expression evaluated. In this case, the last expression is `z = FALSE;` inside the `else` block. Since `FALSE` is equivalent to `0`, the result of the program is `0`.
 
-So, the final values of the variables `x`, `y`, and `z` are `TRUE`, `FALSE`, and `FALSE` respectively, and the result of the program is `0`.
-
+So, the final values of the variables `x`, `y`, and `z` are `TRUE`, `FALSE`, and `FALSE` respectively, and the result of the program is:.
 ```
 Result: 0
 ```
