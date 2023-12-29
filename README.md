@@ -1,18 +1,3 @@
-# Project (40% - 8 Values)
-Mandatory requirement: successfully compile/interpret the tests.
-
-## Deliverables
-### Deadline: 04/01/2023
-- #01:Ast
-- #02:Lexer
-- #03:Parser
-- #04:Compiler/Interpreter
-- #05:Main
-- #06:Makefile
-- #07:Tests
-- #08:Readme
-
-------------------------------------------------------------------
 # Logic Compiler
 This is a simple logic compiler that interprets a language with boolean expressions and control flow structures.
 
