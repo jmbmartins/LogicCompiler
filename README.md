@@ -28,6 +28,23 @@ The language has the following grammar:
 - `Makefile`: Defines the build rules for the project.
 - `test.c`: Contains a test program that runs the logic compiler on several test files and checks if the output matches the expected result.
 
+### Test Files:
+
+- `declaration_tests/test_var_declaration.txt`: Tests variable declaration.
+- `declaration_tests/test_var_expression.txt`: Tests using variables in expressions.
+- `declaration_tests/test_var_multiple.txt`: Tests declaring multiple variables.
+- `declaration_tests/test_var_reassignment.txt`: Tests reassigning a value to a variable.
+- `declaration_tests/test_var_usage.txt`: Tests using a variable after it has been declared.
+
+- `if-else_tests/logical_op_if-else.txt`: Tests using logical operators in if-else conditions.
+- `if-else_tests/nested_if-else.txt`: Tests nested if-else statements.
+- `if-else_tests/simple_if-else.txt`: Tests simple if-else statements.
+
+- `loop_tests/for_loop.txt`: Tests for loops.
+- `loop_tests/while_loop.txt`: Tests while loops.
+
+Each of these test files contains source code in the logic language presented. The test program runs the logic compiler on each file and checks if the output matches the expected result. If the output does not match, the test fails and the program prints an error message.
+
 ## Features
 
 The logic compiler can:
