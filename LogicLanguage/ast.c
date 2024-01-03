@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ast.h"
-#include <string.h>  // Add this line
+#include <string.h>  
 
+// Creates a boolean node with the given boolean value
 Node* create_bool_node(int bool_val) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_BOOL;
@@ -10,58 +11,65 @@ Node* create_bool_node(int bool_val) {
     return node;
 }
 
+// Creates a NOT node with the given expression
 Node* create_not_node(Node* expr) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_NOT;
-    node->not_expr.expr = expr; // Updated from 'not' to 'not_expr'
+    node->not_expr.expr = expr; // The expression to negate
     return node;
 }
 
+// Creates a binary operation node with the given left and right expressions and operation type
 Node* create_binop_node(Node* left, Node* right, BinOpType op) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_BINOP;
-    node->binop.left = left;
-    node->binop.right = right;
-    node->binop.op = op;
+    node->binop.left = left; // The left operand
+    node->binop.right = right; // The right operand
+    node->binop.op = op; // The operation to perform
     return node;
 }
 
+// Creates an IF node with the given condition, then branch, and else branch
 Node* create_if_node(Node* cond, Node* then_branch, Node* else_branch) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_IF;
-    node->if_expr.cond = cond;
-    node->if_expr.then_branch = then_branch;
-    node->if_expr.else_branch = else_branch;
+    node->if_expr.cond = cond; // The condition to check
+    node->if_expr.then_branch = then_branch; // The branch to execute if the condition is true
+    node->if_expr.else_branch = else_branch; // The branch to execute if the condition is false
     return node;
 }
 
+// Creates a WHILE node with the given condition and body
 Node* create_while_node(Node* cond, Node* body) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_WHILE;
-    node->while_loop.cond = cond;
-    node->while_loop.body = body;
+    node->while_loop.cond = cond; // The condition to check
+    node->while_loop.body = body; // The body to execute while the condition is true
     return node;
 }
 
+// Creates a FOR node with the given initialization, condition, increment, and body
 Node* create_for_node(Node* init, Node* cond, Node* increment, Node* body) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_FOR;
-    node->for_loop.init = init;
-    node->for_loop.cond = cond;
-    node->for_loop.increment = increment;
-    node->for_loop.body = body;
+    node->for_loop.init = init; // The initialization statement
+    node->for_loop.cond = cond; // The condition to check
+    node->for_loop.increment = increment; // The increment statement
+    node->for_loop.body = body; // The body to execute while the condition is true
     return node;
 }
 
+// Creates a variable declaration node with the given name and value
 Node* create_var_node(char* name, Node* value) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_VAR;
-    node->var_decl.name = name;
-    node->var_decl.value = value;
+    node->var_decl.name = name; // The name of the variable
+    node->var_decl.value = value; // The value of the variable
     printf("Created var node with name: %s and value: %p\n", name, value);  // Print out the node
     return node;
 }
 
+// Looks up a symbol in the given symbol table by its name
 Symbol* lookup_symbol(SymbolTable* symbol_table, char* name) {
     Symbol* symbol = symbol_table->head;
     while (symbol != NULL) {
@@ -70,25 +78,28 @@ Symbol* lookup_symbol(SymbolTable* symbol_table, char* name) {
         }
         symbol = symbol->next;
     }
-    printf("Symbol not found: %s\n", name);  // Add this line
+    printf("Symbol not found: %s\n", name);  // Print out if the symbol is not found
     return NULL;
 }
 
+// Creates a symbol with the given name and value
 Symbol* create_symbol(char* name, int value) {
     Symbol* symbol = malloc(sizeof(Symbol));
-    symbol->name = strdup(name);
-    symbol->value = value;
+    symbol->name = strdup(name); // The name of the symbol
+    symbol->value = value; // The value of the symbol
     symbol->next = NULL;
-    printf("Created symbol: %s = %d\n", name, value);  // Add this line
+    printf("Created symbol: %s = %d\n", name, value);  // Print out the created symbol
     return symbol;
 }
 
+// Adds a symbol to the given symbol table
 void add_symbol(SymbolTable* symbol_table, Symbol* symbol) {
     symbol->next = symbol_table->head;
     symbol_table->head = symbol;
-    printf("Added symbol: %s = %d\n", symbol->name, symbol->value);  // Add this line
+    printf("Added symbol: %s = %d\n", symbol->name, symbol->value);  // Print out the added symbol
 }
 
+// Creates a symbol table
 SymbolTable* create_symbol_table() {
     SymbolTable* symbol_table = malloc(sizeof(SymbolTable));
     if (symbol_table == NULL) {
@@ -99,40 +110,38 @@ SymbolTable* create_symbol_table() {
     return symbol_table;
 }
 
+// Frees the memory allocated for the given symbol table. 
 void free_symbol_table(SymbolTable* symbol_table) {
     Symbol* symbol = symbol_table->head;
     while (symbol != NULL) {
         Symbol* next_symbol = symbol->next;
-        free(symbol->name);  // Assuming name was dynamically allocated
+        free(symbol->name);  
         free(symbol);
         symbol = next_symbol;
     }
     free(symbol_table);
 }
 
+// Creates an assignment node with a given name and value. 
 Node* create_assign_node(char* name, Node* value) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_ASSIGN;
     node->assign.name = strdup(name);  // Make a dynamically allocated copy of name
     node->assign.value = value;
-    // Print the name and value
     printf("Created assign node with name: %s and value: ", name);
     print_ast(value, 0);
     return node;
 }
 
+// Evaluates the value of an assignment node and either creates a new symbol with that value or updates the value of an existing symbol in the symbol table.
 int interpret_assign_node(Node* node, SymbolTable* symbol_table) {
-    // Evaluate the right-hand side of the assignment
     int value = evaluate(node->assign.value, symbol_table);
 
-    // Check if the symbol already exists in the symbol table
     Symbol* symbol = lookup_symbol(symbol_table, node->assign.name);
     if (symbol == NULL) {
-        // If the symbol does not exist, create and add it
         symbol = create_symbol(node->assign.name, value);
         add_symbol(symbol_table, symbol);
     } else {
-        // If the symbol already exists, update its value
         symbol->value = value;
     }
 
@@ -142,6 +151,7 @@ int interpret_assign_node(Node* node, SymbolTable* symbol_table) {
     return value;
 }
 
+// Evaluates a node based on its type. It handles all node types, including boolean, not, binary operation, if, while, for, variable, identifier, assignment, and statements nodes.
 int evaluate(Node* node, SymbolTable* symbol_table) {
     printf("Evaluating node of type: %d\n", node->type);
     print_ast(node, 0);
@@ -231,12 +241,12 @@ int evaluate(Node* node, SymbolTable* symbol_table) {
     }
 }
 
+// Frees a node and all its child nodes.
 void free_node(Node* node) {
     if (node == NULL) {
         return;
     }
 
-    // Free child nodes
     switch (node->type) {
         case NODE_NOT:
             free_node(node->not_expr.expr);
@@ -261,24 +271,25 @@ void free_node(Node* node) {
             free_node(node->for_loop.body);
             break;
         case NODE_VAR:
-            free(node->var_decl.name); // Assuming name was dynamically allocated
+            free(node->var_decl.name); 
             free_node(node->var_decl.value);
             break;
-        case NODE_IDENTIFIER: // Add this case
+        case NODE_IDENTIFIER: 
             free(node->identifier);
             break;
         case NODE_ASSIGN:
-            free(node->assign.name); // Assuming name was dynamically allocated
+            free(node->assign.name);
             free_node(node->assign.value);
             break;
         default:
             break;
     }
 
-    // Free the node itself
     free(node);
 }
 
+
+// Creates an identifier node with the given identifier.
 Node* create_identifier_node(char* identifier) {
     Node* new_node = malloc(sizeof(Node));
     new_node->type = NODE_IDENTIFIER;
@@ -286,12 +297,12 @@ Node* create_identifier_node(char* identifier) {
     return new_node;
 }
 
+// Creates a statements node with the given statement and next node.
 Node* create_statements_node(Node* statement, Node* next) {
     Node* node = malloc(sizeof(Node));
     node->type = NODE_STATEMENTS;
     node->statements.statement = statement;
 
-    // Check if next statement already exists in the list
     Node* check = next;
     while (check != NULL) {
         if (check == statement) {
@@ -310,6 +321,7 @@ Node* create_statements_node(Node* statement, Node* next) {
     return node;
 }
 
+// Appends a statement to the list of statements.
 Node* append_statement(Node* statements, Node* statement) {
     printf("Appending statement of type: %d\n", statement->type);
     printf("Statement: %p\n", statement);  // Print out the statement
@@ -322,7 +334,6 @@ Node* append_statement(Node* statements, Node* statement) {
         return create_statements_node(statement, NULL);
     }
 
-    // Check if statement already exists in the list
     Node* check = statements;
     while (check != NULL) {
         if (check == statement) {
@@ -336,7 +347,6 @@ Node* append_statement(Node* statements, Node* statement) {
         }
     }
 
-    // Append statement to the list
     Node* current = statements;
     while (current->statements.next != NULL) {
         current = current->statements.next;
@@ -344,7 +354,6 @@ Node* append_statement(Node* statements, Node* statement) {
     current->statements.next = create_statements_node(statement, NULL);
     printf("Appended statement of type: %d\n", statement->type);
 
-    // Print the statements list
     printf("Statements list after appending:\n");
     current = statements;
     while (current != NULL) {
@@ -359,6 +368,7 @@ Node* append_statement(Node* statements, Node* statement) {
     return statements;
 }
 
+// Prints the Abstract Syntax Tree (AST) starting from the given node.
 void print_ast(Node* node, int depth) {
     for (int i = 0; i < depth; i++) {
         printf("  ");
@@ -418,7 +428,6 @@ void print_ast(Node* node, int depth) {
             printf("NODE_ASSIGN: %s\n", node->assign.name);
             print_ast(node->assign.value, depth + 1);
             break;
-        // Add cases for other node types...
         default:
             printf("Unknown node type: %d\n", node->type);
             break;

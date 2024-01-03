@@ -1,24 +1,29 @@
 #ifndef AST_H
 #define AST_H
 
-typedef enum { NODE_BOOL, NODE_NOT, NODE_BINOP, NODE_IF, NODE_WHILE, NODE_FOR, NODE_VAR, NODE_IDENTIFIER, NODE_ASSIGN, NODE_STATEMENTS } NodeType;  // Add NODE_ASSIGN
+// NodeType and BinOpType are enums representing the different types of nodes and binary operations in the AST.
+typedef enum { NODE_BOOL, NODE_NOT, NODE_BINOP, NODE_IF, NODE_WHILE, NODE_FOR, NODE_VAR, NODE_IDENTIFIER, NODE_ASSIGN, NODE_STATEMENTS } NodeType;  
 typedef enum { OP_AND, OP_OR } BinOpType;
 
+// Symbol structure represents a symbol in the symbol table with its name, value and a pointer to the next symbol.
 typedef struct Symbol {
     char* name;
     int value;
     struct Symbol* next;
 } Symbol;
 
+// SymbolTable structure represents a symbol table with a pointer to the head of the list of symbols.
 typedef struct SymbolTable {
     Symbol* head;
 } SymbolTable;
 
+// Assign structure represents an assignment with a name and a value.
 typedef struct {
     char* name;
     struct Node* value;
 } Assign;
 
+// Node structure represents a node in the AST. It has a type and a union of different possible node structures.
 typedef struct Node {
     NodeType type;
     union {
@@ -55,10 +60,11 @@ typedef struct Node {
             struct Node* next;
         } statements;
         char* identifier;
-        Assign assign;  // Add Assign assign
+        Assign assign;  
     };
 } Node;
 
+// Function declarations for creating different types of nodes, evaluating nodes, managing the symbol table, and printing the AST.
 Node* create_bool_node(int value);
 Node* create_not_node(Node* expr);
 Node* create_binop_node(Node* left, Node* right, BinOpType op);
@@ -74,11 +80,9 @@ int evaluate(Node* node, SymbolTable* symbol_table);
 Symbol* lookup_symbol(SymbolTable* symbol_table, char* name);
 Symbol* create_symbol(char* name, int value);
 void add_symbol(SymbolTable* symbol_table, Symbol* symbol);
-
-// Added function declarations
 SymbolTable* create_symbol_table();
 void free_symbol_table(SymbolTable* symbol_table);
 void print_ast(Node* node, int depth);
 int interpret_assign_node(Node* node, SymbolTable* symbol_table);
 
-#endif // AST_H
+#endif 

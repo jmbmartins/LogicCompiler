@@ -1,8 +1,9 @@
+// Include the necessary header files.
 %{
 #include <stdio.h>
 #include "ast.h"
 #include <stdlib.h>
-#include "lex.yy.h"  // Include the Flex header
+#include "lex.yy.h"  
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -10,11 +11,13 @@ void yyerror(const char* s);
 
 Node* parse_tree;
 
-void print_ast(Node* node, int depth);  // Declare print_ast
+void print_ast(Node* node, int depth);  
 
-Node* create_assign_node(char* name, Node* value);  // Declare create_assign_node
+Node* create_assign_node(char* name, Node* value);  
 %}
 
+
+// Define the types of values that tokens and non-terminals can have.
 %union {
     Node* node;
     int bool_val;
@@ -22,6 +25,7 @@ Node* create_assign_node(char* name, Node* value);  // Declare create_assign_nod
     char* strval;
 }
 
+// Define the tokens and their types.
 %token <bool_val> TRUE FALSE
 %token <binop> AND OR
 %token IF THEN ELSE WHILE FOR VAR
@@ -30,8 +34,11 @@ Node* create_assign_node(char* name, Node* value);  // Declare create_assign_nod
 %token ASSIGN
 %token NOT
 
+// Define the types of non-terminals.
 %type <node> expr statement statements init_expr
 
+
+// Define the grammar rules and their actions.
 %%
 
 program:
@@ -69,6 +76,7 @@ expr:
 
 %%
 
+// Define the error handling function.
 void yyerror(const char* s) {
     fprintf(stderr, "Parse error: %s\n", s);
     if (yychar < 256) {
